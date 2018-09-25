@@ -47,35 +47,35 @@ else
 }
 
 @functions {
-Contato[] contatos;
+    Contato[] contatos;
 
-protected override async Task OnInitAsync()
-{
-    contatos = await Http.GetJsonAsync<Contato[]>("api/Contatos/");
-}
+    protected override async Task OnInitAsync()
+    {
+        contatos = await Http.GetJsonAsync<Contato[]>("api/Contatos/");
+    }
 
-private void NovoContato()
-{
-    UriHelper.NavigateTo("/contatos/inserir");
-}
+    private void NovoContato()
+    {
+        UriHelper.NavigateTo("/contatos/inserir");
+    }
 
-private void EditarContato(long id)
-{
-    UriHelper.NavigateTo($"/contatos/editar/{id}");
-}
+    private void EditarContato(long id)
+    {
+        UriHelper.NavigateTo($"/contatos/editar/{id}");
+    }
 
-private async Task ExcluirContato(long id)
-{
-    await Http.DeleteAsync($"api/contatos/{id}");
-    contatos = null;
-    this.StateHasChanged();
-    await this.OnInitAsync();
-}
+    private async Task ExcluirContato(long id)
+    {
+        await Http.DeleteAsync($"api/contatos/{id}");
+        contatos = null;
+        this.StateHasChanged();
+        await this.OnInitAsync();
+    }
 
-private async Task<object> DigaAlgo()
-{
-    return await JSRuntime.Current.InvokeAsync<object>(
-        "digaAlgo",
-        "Alguma coisa");
-}
+    private async Task<object> DigaAlgo()
+    {
+        return await JSRuntime.Current.InvokeAsync<object>(
+            "digaAlgo",
+            "Alguma coisa");
+    }
 }
