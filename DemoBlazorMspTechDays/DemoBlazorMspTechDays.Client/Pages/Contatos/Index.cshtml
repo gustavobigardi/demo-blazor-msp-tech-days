@@ -3,9 +3,12 @@
 @inject HttpClient Http
 @inject Microsoft.AspNetCore.Blazor.Services.IUriHelper UriHelper
 
+
 <h1>Contatos</h1>
 
 <button class="btn btn-default" onclick="@NovoContato"><span class="oi oi-plus" aria-hidden="true"></span> Novo</button><br /><br />
+
+<button class="btn btn-default" onclick="@DigaAlgo"><span class="oi oi-chat" aria-hidden="true"></span> Diga algo</button><br /><br />
 
 @if (contatos == null)
 {
@@ -44,28 +47,35 @@ else
 }
 
 @functions {
-    Contato[] contatos;
+Contato[] contatos;
 
-    protected override async Task OnInitAsync()
-    {
-        contatos = await Http.GetJsonAsync<Contato[]>("api/Contatos/");
-    }
+protected override async Task OnInitAsync()
+{
+    contatos = await Http.GetJsonAsync<Contato[]>("api/Contatos/");
+}
 
-    private void NovoContato()
-    {
-        UriHelper.NavigateTo("/contatos/inserir");
-    }
+private void NovoContato()
+{
+    UriHelper.NavigateTo("/contatos/inserir");
+}
 
-    private void EditarContato(long id)
-    {
-        UriHelper.NavigateTo($"/contatos/editar/{id}");
-    }
+private void EditarContato(long id)
+{
+    UriHelper.NavigateTo($"/contatos/editar/{id}");
+}
 
-    private async Task ExcluirContato(long id)
-    {
-        await Http.DeleteAsync($"api/contatos/{id}");
-        contatos = null;
-        this.StateHasChanged();
-        await this.OnInitAsync();
-    }
+private async Task ExcluirContato(long id)
+{
+    await Http.DeleteAsync($"api/contatos/{id}");
+    contatos = null;
+    this.StateHasChanged();
+    await this.OnInitAsync();
+}
+
+private async Task<object> DigaAlgo()
+{
+    return await JSRuntime.Current.InvokeAsync<object>(
+        "digaAlgo",
+        "Alguma coisa");
+}
 }
